@@ -24,6 +24,7 @@ func NewLibraryController(service services.Library) *LibraryController {
 }
 
 func (libcon *LibraryController) AddMember(reader *bufio.Reader) {
+add:
 	fmt.Println()
 	fmt.Println("===================================")
 	fmt.Print("\tEnter Member ID: ")
@@ -32,7 +33,9 @@ func (libcon *LibraryController) AddMember(reader *bufio.Reader) {
 	if err != nil {
 		fmt.Println("Invalid Member ID")
 		fmt.Println("===================================")
-		return
+		time.Sleep(2 * time.Second)
+		fmt.Print("\033[H\033[2J") //clear the console
+		goto add
 	}
 
 	fmt.Print("\tEnter Name: ")
@@ -54,6 +57,7 @@ func (libcon *LibraryController) AddMember(reader *bufio.Reader) {
 }
 
 func (libcon *LibraryController) AddBook(reader *bufio.Reader) {
+add:
 	fmt.Println()
 	fmt.Println("======================================")
 	fmt.Print("\tEnter book ID: ")
@@ -62,7 +66,9 @@ func (libcon *LibraryController) AddBook(reader *bufio.Reader) {
 	if err != nil {
 		fmt.Println("Invalid book ID")
 		fmt.Println("===================================")
-		return
+		time.Sleep(2 * time.Second)
+		fmt.Print("\033[H\033[2J") //clear the console
+		goto add
 	}
 
 	fmt.Print("\tEnter title: ")
@@ -89,6 +95,7 @@ func (libcon *LibraryController) AddBook(reader *bufio.Reader) {
 }
 
 func (c *LibraryController) RemoveBook(reader *bufio.Reader) {
+add:
 	fmt.Println()
 	fmt.Println("======================================")
 	fmt.Print("Enter book ID to remove: ")
@@ -97,7 +104,9 @@ func (c *LibraryController) RemoveBook(reader *bufio.Reader) {
 	if err != nil {
 		fmt.Println("Invalid book ID")
 		fmt.Println("======================================")
-		return
+		time.Sleep(2 * time.Second)
+		fmt.Print("\033[H\033[2J") //clear the console
+		goto add
 	}
 
 	c.services.RemoveBook(id)
@@ -109,14 +118,35 @@ func (c *LibraryController) ListAvailableBooks() {
 	fmt.Println()
 	fmt.Println("======================================")
 	books := c.services.ListAvailableBooks()
-	fmt.Println("Available Books:")
-	fmt.Println("\tID\tTitle\tAuthor")
-	for _, book := range books {
-		fmt.Printf("\t%d\t%s\t%s\n", book.ID, book.Title, book.Author)
+	if len(books) == 0 {
+		fmt.Println("There are no books right now.")
+	} else {
+		fmt.Println("Available Books:")
+		fmt.Println("\tID\tTitle\tAuthor")
+		for _, book := range books {
+			fmt.Printf("\t%d\t%s\t%s\n", book.ID, book.Title, book.Author)
+		}
+	}
+
+}
+
+func (c *LibraryController) ListMembers() {
+	fmt.Println()
+	fmt.Println("======================================")
+	members := c.services.ListMembers()
+	if len(members) == 0 {
+		fmt.Println("There are no members right now.")
+	} else {
+		fmt.Println("Members:")
+		fmt.Println("\tID\t\tName")
+		for _, member := range members {
+			fmt.Printf("\t%d\t\t%s\n", member.ID, member.Name)
+		}
 	}
 }
 
 func (c *LibraryController) ListBorrowedBooks(reader *bufio.Reader) {
+add:
 	fmt.Println()
 	fmt.Println("======================================")
 	fmt.Print("Enter member ID: ")
@@ -125,7 +155,9 @@ func (c *LibraryController) ListBorrowedBooks(reader *bufio.Reader) {
 	if err != nil {
 		fmt.Println("Invalid member ID")
 		fmt.Println("======================================")
-		return
+		time.Sleep(2 * time.Second)
+		fmt.Print("\033[H\033[2J") //clear the console
+		goto add
 	}
 
 	books, err := c.services.ListBorrowedBooks(id)
@@ -149,6 +181,7 @@ func (c *LibraryController) ListBorrowedBooks(reader *bufio.Reader) {
 }
 
 func (c *LibraryController) BorrowBook(reader *bufio.Reader) {
+add:
 	fmt.Println()
 	fmt.Println("======================================")
 	fmt.Print("Enter book ID: ")
@@ -157,7 +190,9 @@ func (c *LibraryController) BorrowBook(reader *bufio.Reader) {
 	if err != nil {
 		fmt.Println("Invalid book ID")
 		fmt.Println("======================================")
-		return
+		time.Sleep(2 * time.Second)
+		fmt.Print("\033[H\033[2J") //clear the console
+		goto add
 	}
 
 	fmt.Print("Enter member ID: ")
@@ -166,7 +201,9 @@ func (c *LibraryController) BorrowBook(reader *bufio.Reader) {
 	if err != nil {
 		fmt.Println("Invalid member ID")
 		fmt.Println("======================================")
-		return
+		time.Sleep(2 * time.Second)
+		fmt.Print("\033[H\033[2J") //clear the console
+		goto add
 	}
 
 	err = c.services.BorrowBook(bookID, memberID)
@@ -179,6 +216,7 @@ func (c *LibraryController) BorrowBook(reader *bufio.Reader) {
 }
 
 func (c *LibraryController) ReturnBook(reader *bufio.Reader) {
+add:
 	fmt.Println()
 	fmt.Println("======================================")
 	fmt.Print("Enter book ID: ")
@@ -187,7 +225,9 @@ func (c *LibraryController) ReturnBook(reader *bufio.Reader) {
 	if err != nil {
 		fmt.Println("Invalid book ID")
 		fmt.Println("======================================")
-		return
+		time.Sleep(2 * time.Second)
+		fmt.Print("\033[H\033[2J") //clear the console
+		goto add
 	}
 
 	fmt.Print("Enter member ID: ")

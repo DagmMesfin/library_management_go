@@ -96,6 +96,10 @@ func (lib *Library) ListAvailableBooks() []models.Book {
 	return availableBooks
 }
 
+func (lib *Library) ListMembers() map[int]models.Member {
+	return lib.members
+}
+
 func (lib *Library) ListBorrowedBooks(memberID int) ([]models.Book, error) {
 	member, member_exist := lib.members[memberID]
 
